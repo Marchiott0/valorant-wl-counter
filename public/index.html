@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Valorant W/L Counter</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="W/L Counter, início"><span class="brand-mark" aria-hidden="true"></span><span>W/L <strong>COUNTER</strong></span></a>
+      <span class="local-badge"><span class="local-dot" aria-hidden="true"></span>Aplicativo local</span>
+    </header>
+
+    <main>
+      <div class="page-heading">
+        <div><p class="eyebrow">VALORANT · COMPETITIVO</p><h1>Seu dia. Seu placar.</h1><p class="intro">Suas ranqueadas de hoje, direto na transmissão.</p></div>
+        <div class="day-label"><span>CONTAGEM DO DIA</span><strong id="day-label">—</strong><small id="timezone-day-label">America/Sao_Paulo</small></div>
+      </div>
+
+      <div class="workspace">
+        <section class="settings-column" aria-label="Configurações">
+          <form id="settings-form">
+            <section class="panel account-panel" aria-labelledby="account-title">
+              <div class="section-heading"><span class="step">01</span><div><h2 id="account-title">Conecte sua conta</h2><p>Uma configuração. Atualizações automáticas.</p></div></div>
+              <div class="field-row">
+                <div class="field field-grow"><label for="riot-id">Riot ID</label><input id="riot-id" name="riotId" type="text" placeholder="SeuNome#BR1" autocomplete="off" maxlength="100" required aria-describedby="riot-help"><small id="riot-help">Nome e tag, exatamente como no jogo.</small></div>
+                <div class="field region-field"><label for="region">Região</label><select id="region" name="region"><option value="br">Brasil</option><option value="latam">América Latina</option><option value="na">América do Norte</option><option value="eu">Europa</option><option value="ap">Ásia-Pacífico</option><option value="kr">Coreia</option></select></div>
+              </div>
+              <div class="field-row account-options">
+                <div class="field field-grow"><label for="timezone">Fuso horário</label><select id="timezone" name="timeZone" required><option value="America/Sao_Paulo">Brasília / São Paulo</option></select><small>Define o início e o fim do dia.</small></div>
+                <div class="field region-field"><label for="platform">Plataforma</label><select id="platform" name="platform"><option value="pc">PC</option><option value="console">Console</option></select></div>
+              </div>
+              <div class="field account-options"><label for="poll-seconds">Frequência de consulta</label><select id="poll-seconds" name="pollSeconds"><option value="30">30 segundos</option><option value="45">45 segundos</option><option value="60" selected>60 segundos (recomendado)</option><option value="120">2 minutos</option><option value="300">5 minutos</option></select><small>O serviço pode limitar consultas e atrasar resultados.</small></div>
+              <div class="field key-field"><div class="label-line"><label for="api-key">Chave da API HenrikDev</label><a href="https://api.henrikdev.xyz/dashboard/" target="_blank" rel="noopener noreferrer">Obter uma chave <span aria-hidden="true">↗</span></a></div><input id="api-key" name="apiKey" type="password" placeholder="Cole sua chave aqui" autocomplete="new-password" spellcheck="false" maxlength="2048" aria-describedby="key-help"><small id="key-help">No painel HenrikDev: API Keys → Generate New Key. A chave fica no servidor local.</small></div>
+              <div class="account-actions"><button type="submit" id="save-button" class="button primary">Salvar e conectar <span aria-hidden="true">↗</span></button><button type="button" id="test-button" class="button secondary">Testar conexão</button></div>
+              <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="panel style-panel" aria-labelledby="style-title">
+              <div class="section-heading"><span class="step">02</span><div><h2 id="style-title">Deixe com a sua cara</h2><p>Somente o essencial. Do seu jeito.</p></div></div>
+              <div class="field-row appearance-row"><div class="field field-grow"><label for="font-family">Fonte</label><select id="font-family" name="fontFamily"><option value="Segoe UI">Segoe UI</option><option value="Arial">Arial</option><option value="Consolas">Consolas</option><option value="Trebuchet MS">Trebuchet MS</option></select></div><div class="field size-field"><label for="font-size">Tamanho</label><div class="number-unit"><input type="number" id="font-size" name="fontSize" min="16" max="160" step="1" value="48" inputmode="numeric"><span>px</span></div></div></div>
+              <div class="color-options"><div class="color-field"><label for="win-color">Vitórias</label><div class="color-control"><input type="color" id="win-color" name="winColor" value="#4ade80"><output for="win-color" id="win-color-value">#4ADE80</output></div></div><div class="color-field"><label for="loss-color">Derrotas</label><div class="color-control"><input type="color" id="loss-color" name="lossColor" value="#fb7185"><output for="loss-color" id="loss-color-value">#FB7185</output></div></div><div class="color-field"><label for="text-color">Separador</label><div class="color-control"><input type="color" id="text-color" name="textColor" value="#ffffff"><output for="text-color" id="text-color-value">#FFFFFF</output></div></div></div>
+              <div class="style-footer"><span>A prévia muda enquanto você ajusta.</span><button type="button" class="button secondary small" id="save-style-button">Salvar aparência</button></div>
+            </section>
+          </form>
+        </section>
+
+        <aside class="monitor-column" aria-label="Prévia e acompanhamento">
+          <section class="panel preview-panel" aria-labelledby="preview-title">
+            <div class="preview-header"><h2 id="preview-title">PRÉVIA DO OVERLAY</h2><span class="preview-tag">TRANSPARENTE</span></div>
+            <div class="preview-stage"><div id="preview-counter" class="counter" aria-label="Contagem ainda indisponível"><span class="wins">W = <span id="preview-wins">—</span></span><span class="divider"> / </span><span class="losses">L = <span id="preview-losses">—</span></span></div></div>
+            <div class="preview-caption"><span class="subtle-dot" aria-hidden="true"></span>O quadriculado representa o fundo transparente.</div>
+          </section>
+
+          <section class="panel status-panel" aria-labelledby="status-title">
+            <div class="status-heading"><h2 id="status-title">Conexão e sincronização</h2><span id="status-badge" class="status-badge" data-status="setup">Configurar</span></div>
+            <p id="status-message">Informe sua conta e a chave da API para começar.</p>
+            <dl class="sync-details"><div><dt>Última atualização válida</dt><dd id="last-success">Ainda não atualizou</dd></div><div><dt>Próxima consulta</dt><dd id="next-poll">Aguardando configuração</dd></div><div><dt>Frequência</dt><dd id="poll-frequency">60 segundos</dd></div></dl>
+            <p id="incomplete-note" class="notice" hidden>O histórico ainda não foi confirmado por completo. Os números podem estar desatualizados.</p>
+          </section>
+
+          <section class="panel obs-panel" aria-labelledby="obs-title">
+            <div class="section-heading"><span class="step">03</span><div><h2 id="obs-title">Leve para o OBS</h2><p>Adicione uma fonte de Navegador e cole esta URL.</p></div></div>
+            <div class="url-control"><input id="overlay-url" type="text" readonly aria-label="URL do overlay para o OBS" value="http://127.0.0.1:3791/overlay"><button type="button" id="copy-url" class="copy-button" aria-label="Copiar URL do overlay">Copiar</button></div>
+            <div class="obs-bottom"><span>Sugestão: 800 × 180 px</span><a href="/overlay" target="_blank" rel="noopener noreferrer">Abrir overlay <span aria-hidden="true">↗</span></a></div>
+          </section>
+        </aside>
+      </div>
+      <footer class="page-footer"><p>Somente partidas competitivas concluídas. O dia considera o início da partida no fuso selecionado.</p><p>O resultado aparece quando a API disponibiliza a partida. Este aplicativo não é afiliado à Riot Games.</p></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

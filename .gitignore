@@ -1,0 +1,9 @@
+data/
+runtime/
+dist/
+node_modules/
+coverage/
+*.log
+*.tmp
+*.exe
+*.dpapi

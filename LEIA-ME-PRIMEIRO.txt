@@ -1,0 +1,31 @@
+VALORANT W/L COUNTER
+
+Contador automatico de vitorias e derrotas do modo competitivo para OBS.
+
+COMECAR NO WINDOWS
+1. Extraia todos os arquivos do ZIP antes de abrir o programa.
+2. Abra Valorant W-L.exe (ou iniciar.bat).
+3. No painel local, preencha seu proprio Riot ID, regiao e plataforma.
+4. Obtenha sua propria chave em https://api.henrikdev.xyz/dashboard/:
+   entre na conta HenrikDev, abra API Keys e gere uma chave.
+5. Cole a chave no painel local. Escolha seu fuso e a frequencia desejada.
+6. Clique Salvar e conectar e confira o status da sincronizacao.
+
+ADICIONAR AO OBS
+1. Na cena desejada, clique em Fontes > + > Navegador.
+2. Crie uma fonte chamada Valorant W/L; deixe Arquivo local desmarcado.
+3. No campo URL, cole http://127.0.0.1:3791/overlay
+4. Configure largura 800 e altura 180, clique OK e posicione a fonte.
+5. Se ela ficar atras do jogo, mova-a para o topo da lista de Fontes.
+
+O programa deve continuar aberto durante a transmissao. Fechar o navegador
+nao encerra o servidor. Abra parar.bat para encerrar.
+O contador muda de dia a meia-noite no fuso escolhido e considera o inicio
+real das partidas. Resultados podem demorar para chegar na API.
+
+Se o historico estiver incompleto, o painel avisa e o overlay preserva o
+ultimo valor confirmado do dia; sem um valor confirmado, mostra tracos.
+Cada usuario precisa configurar sua propria conta e chave API.
+Sua chave e protegida pelo Windows e nao aparece no overlay.
+
+Leia README.md para instrucoes detalhadas, limites conhecidos e suporte.
